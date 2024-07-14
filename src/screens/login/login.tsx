@@ -1,12 +1,29 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { LoginStyles } from "./loginStyle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { fetchProductRequest } from "../../slices/productSlice";
 
 export const Login = () => {
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     email: "",
     password: "",
   });
+  const stateProduct = useSelector((state: any) => state.product);
+  console.log("stateProduct", stateProduct);
+
+  const fetchCall = async () => {
+    try {
+      await dispatch(fetchProductRequest(""));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    fetchCall();
+  }, [dispatch]);
 
   const handleChange = (name: string, value: string) => {
     setState({
@@ -31,6 +48,7 @@ export const Login = () => {
       console.log("payload", payload);
     }
   };
+
   return (
     <Box>
       <Box sx={LoginStyles?.loginBox}>
